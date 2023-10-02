@@ -57,9 +57,17 @@ const loginUser = (async (req, res) => {
                     user: user.name,
                     authToken: token
                 });
-            }
+            } else {
+                return res.status(400).json({
+                    status: 400,
+                    message: "Invalid Credentials"
+                });
+            }    
         } else {
-            return res.status(400).send("Invalid Credentials");
+            return res.status(400).json({
+                status: 400,
+                message: "User not found"
+            });
         }
 
     } catch(error) {
