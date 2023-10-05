@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const verifyToken = require("../middleware/authJWT.middleware.js").verifyToken
 
 const  { 
     getBooks,
@@ -8,12 +7,12 @@ const  {
 } = require('../controllers/books.controller.js')
 
 // Get Specific Book using ID
-router.get('/getBook/:bookID', verifyToken, getBook)
+router.get('/getBook/:bookID', getBook)
 
 // Get All Books
-router.get('/getBook', verifyToken, getBooks)
+router.get('/getBook', getBooks)
 
 // Create Book
-router.post("/createBook",  verifyToken, createBook)
+router.post("/createBook", createBook)
 // Exporting the routes
 module.exports = router

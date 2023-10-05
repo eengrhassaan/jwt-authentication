@@ -1,6 +1,7 @@
 const model = require("../models")
 const sequelize = model.sequelize
 const Books = model.books
+const response_messages = require("../constants/response.messages.constants.js").respone_messages
 
 // Get All Books
 const getBooks = (async(req, res) => {
@@ -22,19 +23,23 @@ const getBook = (async(req, res) => {
                 id
             }
         })
+        console.log(book)
         if (!book) {
             return res.status(404).json({
-                statu: 404,
-                message: 'Book not found'
+                status: 404,
+                message: response_messages.BOOK_NOT_FOUND
             })
         }
         res.status(200).json({
-            statu: 200, 
+            status: 200, 
             data: book
         })
     } catch(error) {
         console.log(error)
-        return res.status(500).json(error);
+        return res.status(404).json({
+            status: 404,
+            message: response_messages.BOOK_NOT_FOUND
+        });
     }
 })
 
@@ -47,7 +52,7 @@ const createBook = (async(req, res) => {
         if (!title && !author) {
             return res.status(400).json({
                 status: 400,
-                message: "Please pass both title and author of Book"
+                message: response_messages.TITLE_AND_AUTHOR_REQUIRED
             });
         }
 
@@ -69,13 +74,13 @@ const createBook = (async(req, res) => {
             
             return res.status(200).json({
                 status: 200,
-                message: `Book ${result.dataValues.title} created Successfully`,
+                message: response_messages.BOOK_CREATED,
                 book: result
             });
         } else {
             return res.status(409).json({
                 status: 409,
-                message: `Book already existed`,
+                message: response_messages.BOOK_EXISTED,
                 book: book
             })
         }

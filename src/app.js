@@ -10,6 +10,9 @@ const express = require('express'),
       signupRoutes = require("./routes/signup.js"),
       loginRoutes = require("./routes/login.js")
 
+const verifyToken = require("./middleware/authJWT.middleware.js").verifyToken
+
+
 const config = require('dotenv').config().parsed;
 var cookieParser = require('cookie-parser')
 const server_port = config.PORT;
@@ -20,6 +23,7 @@ app.use(cookieParser())
 app.get('/', (req, res) => {
     console.log("CALLED")
 });
+
 
 // Initiate DB Instance
 const db = require("./models");
@@ -36,12 +40,8 @@ app.use(signupRoutes)
 // using user route
 // app.use(userRoutes);
 
-// Using Books Route
-app.use(booksRoutes);
-
 // Using login Route
 app.use(loginRoutes)
 
-
-
-
+// Using Books Route
+app.use(verifyToken, booksRoutes);

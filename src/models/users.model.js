@@ -15,13 +15,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING
       },
-      name:{
+      first_name:{
         type:DataTypes.STRING,
         allowNull: false,
         validate:{
-          notNull: {msg: "Name is required"},
-          notEmpty: {msg: "Name cannot be empty"},
+          notNull: {msg: "First Name is required"},
+          notEmpty: {msg: "First Name cannot be empty"},
         }
+      },
+      last_name:{
+        type:DataTypes.STRING,
+        allowNull: true,
       },
       email:{
         type:DataTypes.STRING,

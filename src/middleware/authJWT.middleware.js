@@ -8,6 +8,7 @@ const sequelize = model.sequelize
 const User = model.users
 
 const config = require("dotenv").config().parsed
+const response_messages = require("../constants/response.messages.constants.js").respone_messages
 
 const verifyToken = (req, res, next) => {
     try {
@@ -20,7 +21,7 @@ const verifyToken = (req, res, next) => {
                     return res.status(401).json({
                         status: 401,
                         error: err.message,
-                        message: "Invalid Token, please sign-in again or use refresh token call"
+                        message: response_messages.INVALID_TOKEN
                     })
                 }
                 
@@ -33,7 +34,7 @@ const verifyToken = (req, res, next) => {
                 } else {
                     return res.status(401).json({
                         status: 401,
-                        message: "Courrupted User/Token"
+                        message: response_messages.CORRUPTED_TOKEN
                     })
                 }
             })
@@ -41,11 +42,16 @@ const verifyToken = (req, res, next) => {
             req.user = undefined;
             return res.status(401).json({
                 status: 401,
-                message: "Invalid Token, please sign-in again or use refresh token call"
+                message: response_messages.INVALID_TOKEN
             })
         }
     } catch (error) {
         console.log(error)
+        return res.status(500).json({
+            status: 500,
+            error: error,
+            message: response_messages.INTERNAL_SERVER_ERROR
+        })
     }
 };
 
@@ -56,13 +62,16 @@ const refreshToken = (req, res) => {
   
         // Destructuring refreshToken from cookie
         const refreshToken = req.cookies.jwt;
-  
+        console.log("\n\n"+ (JWT.decode(refreshToken).exp))
+
         // Verifying refresh token
         JWT.verify(refreshToken, config.API_SECRET, 
         (err, decoded) => {
             if (err) { 
                 // Wrong Refesh Token
-                return res.status(406).json({ message: 'Unauthorized' });
+                return res.status(406).json({ 
+                    message: response_messages.UNAUTHORIZED 
+                });
             }
             else {
                 // Correct token we send a new access token
@@ -76,7 +85,9 @@ const refreshToken = (req, res) => {
             }
         })
     } else {
-        return res.status(406).json({ message: 'Unauthorized' });
+        return res.status(406).json({ 
+            message: respone_messages.UNAUTHORIZED 
+        });
     }
 };
 

@@ -5,18 +5,19 @@ const User = model.users
 const bcrypt = require('bcryptjs');
 const saltRounds = 10
 
+const respone_messages = require('../constants/response.messages.constants.js').respone_messages
+
 // Register User
 const registerUser = (async (req, res) => {
-    console.log("CALLED: " + "/register")
-    const { name, email, password } = req.body
+    const { first_name, last_name, email, password } = req.body
     console.log(req.body)
     try {
 
         // Validate user input
-        if (!(email && password && name)) {
+        if (!(email && password && first_name)) {
             return res.status(400).json({
                 status: 400,
-                message: "All inputs are required"
+                message: respone_messages.USER_REGISTER_INPUT
             });
         }
 
@@ -27,7 +28,7 @@ const registerUser = (async (req, res) => {
         if (oldUser) {
             return res.status(409).json({   
                     status: 409,
-                    message: "User Already Exist. Please Login"
+                    message: respone_messages.USER_ALREADY_EXISTED
                 });
         }
         
@@ -37,8 +38,9 @@ const registerUser = (async (req, res) => {
         
         const result = await sequelize.transaction(async (t) => {
             const user = await User.create({
-                name: name, 
-                email: email, 
+                first_name: first_name,
+                last_name: last_name, 
+                email: email,
                 password: encryptedPassword
             }, { transaction: t });
             console.log(t)
@@ -48,7 +50,7 @@ const registerUser = (async (req, res) => {
         console.log(result.dataValues)
         return res.status(200).json({
             status: 200,
-            message: `User ${result.dataValues.name} created Successfully`
+            message: respone_messages.USER_CREATED,
         });
 
     } catch(error) {

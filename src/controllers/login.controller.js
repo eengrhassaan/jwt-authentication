@@ -9,16 +9,17 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require('bcryptjs');
 const saltRounds = 10
 
+const response_messages = require("../constants/response.messages.constants.js").respone_messages
+
 // Login User Function
 const loginUser = (async (req, res) => {
-    console.log("CALLED: " + "/login");
     const { email, password } = req.body
     try {
         // Validate user input
         if (!(email && password)) {
             return res.status(400).json({
                 status: 400,
-                message: "All inputs are required"
+                message: response_messages.INPUT_FIELDS_REQUIRED
             });
         }
 
@@ -55,18 +56,19 @@ const loginUser = (async (req, res) => {
                 return res.status(200).json({
                     status: 200,
                     user: user.name,
-                    authToken: token
+                    authToken: token,
+                    refreshToken : refreshToken
                 });
             } else {
                 return res.status(400).json({
                     status: 400,
-                    message: "Invalid Credentials"
+                    message: response_messages.INVALID_CREDENTIALS
                 });
             }    
         } else {
             return res.status(400).json({
                 status: 400,
-                message: "User not found"
+                message: response_messages.USER_NOT_FOUND
             });
         }
 
