@@ -23,13 +23,18 @@ function initRedisClient() {
 const getTokenFromCache = async(req, res, next) => {
     try {
         initRedisClient()
-        await redisClient.set(app_configs.prefix_blacklist, '2','EX', 60 * 60 * 24);
-
-        console.log(redisClient.get(app_configs.prefix_blacklist))
         if (req.headers.authorization) {
             const auth_token = req.headers.authorization.split(" ")[1]
-            const token_status = await redisClient.GET(app_configs.prefix_blacklist + auth_token);
-    
+            var token_status = ''
+            await redisClient.get(app_configs.prefix_blacklist + auth_token , (err, reply)=> {
+                if (err) {
+                    token_status = ''
+                } else {
+                    token_status =  reply
+                }
+            })
+
+            console.log(token_status)
             if (token_status) {
                 return res.status(401).json({
                     status: 401,
@@ -39,7 +44,14 @@ const getTokenFromCache = async(req, res, next) => {
         }
 
         if (req.cookies.jwt) {
-            token_status = await redisClient.GET(app_configs.prefix_blacklist + req.cookies.jwt + 'test')
+            var token_status = ''
+            await redisClient.get(app_configs.prefix_blacklist + req.cookies.jwt , (err, reply)=> {
+                if (err) {
+                    token_status = ''
+                } else {
+                    token_status =  reply
+                }
+            })
 
             if (token_status) {
                 return res.status(401).json({
@@ -82,8 +94,8 @@ const setTokenInCache = async(req, res, next) => {
         }
 
         black_listed_token.forEach(async (item)=> {
-            redisClient.set(app_configs.prefix_blacklist + item.auth_token, item.auth_token);
-            redisClient.expireAt(app_configs.prefix_blacklist + item.auth_token, item.auth_token_expiry);
+            redisClient.set(app_configs.prefix_blacklist + item.auth_token, item.auth_token,  'EX', 60 * 60 * 24);
+            // redisClient.expireAt(app_configs.prefix_blacklist + item.auth_token, item.auth_token_expiry);
         })
         next()
     } catch (error) {
