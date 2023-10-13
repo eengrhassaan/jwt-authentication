@@ -57,11 +57,13 @@ const verifyToken = (req, res, next) => {
 
 // Refresh Token
 const refreshToken = (req, res) => {
-    console.log(req.cookie)
-    if (req.cookies?.jwt) {
+    
+    
+    if (req.cookies?.jwt || req.headers.authorization) {
   
         // Destructuring refreshToken from cookie
-        const refreshToken = req.cookies.jwt;
+        const refreshToken = req.headers? req.headers.authorization.split(" ")[1] : req.cookies.jwt ;
+        console.log(refreshToken)
         console.log("\n\n"+ (JWT.decode(refreshToken).exp))
 
         // Verifying refresh token

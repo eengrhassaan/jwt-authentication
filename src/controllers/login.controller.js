@@ -10,6 +10,8 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10
 
 const response_messages = require("../constants/response.messages.constants.js").respone_messages
+const error_messages = require("../constants/response.messages.constants.js").errors_messages
+
 
 // Login User Function
 const loginUser = (async (req, res) => {
@@ -19,6 +21,7 @@ const loginUser = (async (req, res) => {
         if (!(email && password)) {
             return res.status(400).json({
                 status: 400,
+                error: error_messages.INPUT_FIELDS_MISSING,
                 message: response_messages.INPUT_FIELDS_REQUIRED
             });
         }
@@ -33,7 +36,8 @@ const loginUser = (async (req, res) => {
                 // Create token
                 const token = jwt.sign({ 
                     user_id: user.id, 
-                    email 
+                    email: user.email,
+                    first_name: user.first_name
                     },
                     config.API_SECRET,
                     { expiresIn: "1m", }
@@ -42,7 +46,8 @@ const loginUser = (async (req, res) => {
                 // Creating Refresh Token and send it in cookie
                 const refreshToken = jwt.sign({
                     user_id: user.id, 
-                    email
+                    email: user.email,
+                    first_name: user.first_name
                 },
                 config.API_SECRET, 
                 { expiresIn: '1d'});
@@ -62,19 +67,25 @@ const loginUser = (async (req, res) => {
             } else {
                 return res.status(400).json({
                     status: 400,
+                    error: error_messages.INVALID_CREDS,
                     message: response_messages.INVALID_CREDENTIALS
                 });
             }    
         } else {
             return res.status(400).json({
                 status: 400,
+                error: error_messages.USER_NOT_FOUND,
                 message: response_messages.USER_NOT_FOUND
             });
         }
 
     } catch(error) {
         console.log(error)
-        return res.status(500).json(error);
+        return res.status(500).json({
+            status: 500,
+            error: error,
+            message: response_messages.INTERNAL_SERVER_ERROR
+        });
     }
 })
 

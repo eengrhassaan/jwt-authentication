@@ -2,6 +2,8 @@ const model = require("../models")
 const sequelize = model.sequelize
 const Books = model.books
 const response_messages = require("../constants/response.messages.constants.js").respone_messages
+const errors_messages = require("../constants/response.messages.constants.js").errors_messages
+
 
 // Get All Books
 const getBooks = (async(req, res) => {
@@ -27,6 +29,7 @@ const getBook = (async(req, res) => {
         if (!book) {
             return res.status(404).json({
                 status: 404,
+                error: errors_messages.BOOK_NOT_FOUND,
                 message: response_messages.BOOK_NOT_FOUND
             })
         }
@@ -38,6 +41,7 @@ const getBook = (async(req, res) => {
         console.log(error)
         return res.status(404).json({
             status: 404,
+            error: errors_messages.BOOK_NOT_FOUND,
             message: response_messages.BOOK_NOT_FOUND
         });
     }
@@ -52,6 +56,7 @@ const createBook = (async(req, res) => {
         if (!title && !author) {
             return res.status(400).json({
                 status: 400,
+                error: errors_messages.INPUT_FIELDS_MISSING,
                 message: response_messages.TITLE_AND_AUTHOR_REQUIRED
             });
         }
@@ -80,15 +85,21 @@ const createBook = (async(req, res) => {
         } else {
             return res.status(409).json({
                 status: 409,
+                error: errors_messages.ALREADY_EXISTED,
                 message: response_messages.BOOK_EXISTED,
                 book: book
             })
         }
     } catch (error) {
         console.log(error)
-        return res.status(500).json(error);
+        return res.status(500).json({
+            status: 500,
+            error: errors_messages.INTERNAL_SERVER_ERROR,
+            message: response_messages.INTERNAL_SERVER_ERROR
+        });
     }
 })
+
 // Exporting functions
 module.exports = {
     getBooks,
