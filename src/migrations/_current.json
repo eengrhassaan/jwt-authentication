@@ -1,0 +1,17 @@
+{
+    "tables": {
+        "users": {
+            "tableName": "users",
+            "indexes": []
+        },
+        "books": {
+            "tableName": "books",
+            "indexes": []
+        },
+        "tokens_blacklist": {
+            "tableName": "tokens_blacklist",
+            "indexes": []
+        }
+    },
+    "revision": 1
+}
