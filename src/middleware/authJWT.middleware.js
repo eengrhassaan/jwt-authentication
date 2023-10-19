@@ -8,7 +8,7 @@ const sequelize = model.sequelize
 const User = model.users
 
 const config = require("dotenv").config().parsed
-const response_messages = require("../constants/response.messages.constants.js").respone_messages
+const response_messages = require("../constants/response.messages.constants.js").response_messages
 
 const verifyToken = (req, res, next) => {
     try {
@@ -88,7 +88,7 @@ const refreshToken = (req, res) => {
         })
     } else {
         return res.status(406).json({ 
-            message: respone_messages.UNAUTHORIZED 
+            message: response_messages.UNAUTHORIZED 
         });
     }
 };

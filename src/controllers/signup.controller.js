@@ -5,7 +5,7 @@ const User = model.users
 const bcrypt = require('bcryptjs');
 const saltRounds = 10
 
-const respone_messages = require('../constants/response.messages.constants.js').respone_messages
+const response_messages = require('../constants/response.messages.constants.js').response_messages
 
 // Register User
 const registerUser = (async (req, res) => {
@@ -17,7 +17,7 @@ const registerUser = (async (req, res) => {
         if (!(email && password && first_name)) {
             return res.status(400).json({
                 status: 400,
-                message: respone_messages.USER_REGISTER_INPUT
+                message: response_messages.USER_REGISTER_INPUT
             });
         }
 
@@ -28,7 +28,7 @@ const registerUser = (async (req, res) => {
         if (oldUser) {
             return res.status(409).json({   
                     status: 409,
-                    message: respone_messages.USER_ALREADY_EXISTED
+                    message: response_messages.USER_ALREADY_EXISTED
                 });
         }
         
@@ -50,7 +50,7 @@ const registerUser = (async (req, res) => {
         console.log(result.dataValues)
         return res.status(200).json({
             status: 200,
-            message: respone_messages.USER_CREATED,
+            message: response_messages.USER_CREATED,
         });
 
     } catch(error) {

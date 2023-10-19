@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require('bcryptjs');
 const saltRounds = 10
 
-const response_messages = require("../constants/response.messages.constants.js").respone_messages
+const response_messages = require("../constants/response.messages.constants.js").response_messages
 const error_messages = require("../constants/response.messages.constants.js").errors_messages
 
 

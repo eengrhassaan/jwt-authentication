@@ -1,5 +1,5 @@
 // All response messages will be setup here
-const respone_messages = {
+const response_messages = {
     // Book Messages
     BOOK_EXISTED: 'Book already existed',
     TITLE_AND_AUTHOR_REQUIRED: 'Please pass both title and author of Book',
@@ -23,7 +23,7 @@ const respone_messages = {
 
     // Error Messages
     INTERNAL_SERVER_ERROR: 'Internal Server Error',
-    REFRESH_TOKEN_UTILIZED: 'Refresh token already utilized once, please login again',
+    TOKEN_UTILIZED: 'Token already utilized once, please login again',
     UNKNOWN_ERROR: 'UNKNOWN SERVER ERROR, Please contact Server Administrator',
 
     // Token Missing from Cookies or Header
@@ -43,6 +43,6 @@ const errors_messages = {
 }
 
 module.exports = {
-    respone_messages,
+    response_messages,
     errors_messages    
 }

@@ -4,7 +4,7 @@ const express = require('express')
 // Router Initialization
 const router = express.Router()
 
-const token_middleware = require('../middleware/tokenBlValidator.middleware.js')
+const token_middleware = require('../middleware/tokenValidator.middleware.js')
 
 // Importing functions from logincontroller
 const {

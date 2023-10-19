@@ -1,6 +1,6 @@
 // Importing TokensUtilization model
 const model = require("../models")
-const TokensUtilization = model.tokensutilization
+const AppUserToken = model.appusertoken
 const sequelize = model.sequelize
 
 // Importing config
@@ -10,7 +10,7 @@ const config = require("dotenv").config().parsed
 const JWT = require('jsonwebtoken')
 
 // Importing messages constants
-const { respone_messages, errors_messages } = require('../constants/response.messages.constants');
+const { response_messages, errors_messages } = require('../constants/response.messages.constants');
 
 const getTokenFromDB = async (req, res, next) => {
     try {
@@ -18,13 +18,13 @@ const getTokenFromDB = async (req, res, next) => {
         if (req.cookies.jwt || req.headers.authorization) {
             var token = req.headers.authorization?.split(" ")[1] || req.cookies.jwt
             if (token) {
-                const isUtilized = await TokensUtilization.findOne({ attributes: ["isUtilized"], where: { token: token }});
+                const isUtilized = await AppUserToken.findOne({ attributes: ["utilized"], where: { token: token }});
                 //Check for Token Utilizations
                 if (isUtilized) {
                     return res.status(401).json({
                         status: 401,
                         error: errors_messages.REFRESH_TOKEN_UTILIZED,
-                        message: respone_messages.REFRESH_TOKEN_UTILIZED
+                        message: response_messages.TOKEN_UTILIZED
                     })
                 }
             }
@@ -32,7 +32,7 @@ const getTokenFromDB = async (req, res, next) => {
             return res.status(401).json({
                 status: 401,
                 error: errors_messages.TOKEN_MISSING,
-                message: respone_messages.TOKEN_MISSING
+                message: response_messages.TOKEN_MISSING
             })
         }
         next()
@@ -41,7 +41,7 @@ const getTokenFromDB = async (req, res, next) => {
         return res.status(401).json({
                 status: 401,
                 error: errors_messages.UNKNOWN_ERROR,
-                message: respone_messages.UNKNOWN_ERROR,
+                message: response_messages.UNKNOWN_ERROR,
         })     
     }
 }
@@ -62,10 +62,12 @@ const setTokenInDB = async (req, res, next) => {
                     } else {
                         const expiry = decoded.exp;
                         const result = await sequelize.transaction(async (t) => {
-                            const token_transaction = await TokensUtilization.create({
+                            const token_transaction = await AppUserToken.create({
                                 token: token,
-                                isUtilized: 1,
-                                expiry: expiry
+                                appuserid: decoded.user_id,
+                                utilized: true,
+                                expiredon: expiry,
+                                tokentype: 'refresh'
                             }, { transaction: t });
                             
                             return token_transaction;        

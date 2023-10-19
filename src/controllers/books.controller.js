@@ -1,7 +1,7 @@
 const model = require("../models")
 const sequelize = model.sequelize
 const Books = model.books
-const response_messages = require("../constants/response.messages.constants.js").respone_messages
+const response_messages = require("../constants/response.messages.constants.js").response_messages
 const errors_messages = require("../constants/response.messages.constants.js").errors_messages
 
 
