@@ -18,6 +18,6 @@ const refreshToken = require("../middleware/authJWT.middleware.js").refreshToken
 router.post('/login', loginUser)
 
 // Refresh Token API
-router.post('/refresh', token_middleware.getTokenFromCache, token_middleware.setTokenInCache, refreshToken)
+router.post('/refresh', token_middleware.getTokenFromDB, token_middleware.setTokenInDB, refreshToken)
 
 module.exports = router

@@ -25,16 +25,21 @@ const respone_messages = {
     INTERNAL_SERVER_ERROR: 'Internal Server Error',
     REFRESH_TOKEN_UTILIZED: 'Refresh token already utilized once, please login again',
     UNKNOWN_ERROR: 'UNKNOWN SERVER ERROR, Please contact Server Administrator',
+
+    // Token Missing from Cookies or Header
+    TOKEN_MISSING: 'Token missing from Authorization header, or cookie, please pass token'
 }
 
 const errors_messages = {
     INVALID_CREDS: 'INVALID_CREDENTIALS',
     USER_NOT_FOUND: 'USER_NOT_FOUND',
     INPUT_FIELDS_MISSING: 'INPUT_FIELDS_MISSING',
-    REFRESH_TOKEN_UTILIZED: 'REFRESH_TOKEN_UTILIZED',
+    REFRESH_TOKEN_UTILIZED: 'TOKEN_UTILIZED',
     UNKNOWN_ERROR: 'UNKNOWN_ERROR',
     BOOK_NOT_FOUND: 'BOOK_NOT_FOUND',
     ALREADY_EXISTED: 'ALREADY_EXISTED',
+    SET_TOKEN_ERROR: 'SET_TOKEN_ERROR',
+    TOKEN_MISSING: 'TOKEN_MISSING'
 }
 
 module.exports = {
