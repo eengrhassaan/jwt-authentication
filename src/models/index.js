@@ -20,5 +20,6 @@ db.sequelize = sequelize;
 
 db.users = require("../models/users.model.js") (sequelize, Sequelize);
 db.books = require("../models/books.model.js") (sequelize, Sequelize);
+db.tokensutilization = require("../models/TokensUtilization.model.js") (sequelize, Sequelize);
 
 module.exports = db;

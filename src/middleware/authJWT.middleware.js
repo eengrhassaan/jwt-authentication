@@ -62,7 +62,7 @@ const refreshToken = (req, res) => {
     if (req.cookies?.jwt || req.headers.authorization) {
   
         // Destructuring refreshToken from cookie
-        const refreshToken = req.headers? req.headers.authorization.split(" ")[1] : req.cookies.jwt ;
+        const refreshToken = req.cookies?.jwt ? req.cookies?.jwt : req.headers? req.headers.authorization?.split(" ")[1] : null
         console.log(refreshToken)
         console.log("\n\n"+ (JWT.decode(refreshToken).exp))
 
