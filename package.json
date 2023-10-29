@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app.js",
     "watch": "nodemon",
-    "db:makemigrations": "makemigration",
+    "db:makemigrations": "node sequelize-auto-migrations/bin/makemigration.js",
     "db:runmigrations": "runmigration"
   },
   "repository": {
@@ -32,7 +32,8 @@
     "mysql2": "^3.6.1",
     "redis": "^3.1.2",
     "sequelize": "^6.33.0",
-    "sequelize-auto-migrations": "^1.0.3"
+    "sequelize-auto-migrations": "^1.0.3",
+    "sequelizr": "^3.0.75"
   },
   "devDependencies": {
     "sequelize-automatic-migrations": "^1.0.1",

@@ -23,6 +23,7 @@ db.sequelize = sequelize;
 
 db.users = require("../models/users.model.js") (sequelize, Sequelize);
 db.books = require("../models/books.model.js") (sequelize, Sequelize);
-db.tokens_blacklist = require("../models/tokensblacklist.model.js") (sequelize, Sequelize);
+db.tokensblacklist = require("../models/tokensblacklist.model.js") (sequelize, Sequelize);
+db.order = require("./order.model.js") (sequelize, Sequelize);
 
 module.exports = db;
