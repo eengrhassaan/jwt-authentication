@@ -42,6 +42,15 @@ migration_JSON = {
     'CREATE TABLE': '',
     'DROP TABLE': ''
 }
+
+migration_JSON['CREATE TABLE'] = {
+    "tmp_model": []
+}
+
+migration_JSON['ALTER TABLE'] = {
+    "tmp_model": []
+}
+
 temp_table_fields = []
 
 dropped_tables_list = []
@@ -98,10 +107,8 @@ function createJSONMigrationFile(){
 
                     if (update_col) {
                         intermediate_model = {}
-                        migration_JSON['ALTER TABLE'] = {
-                            "tmp_model": []
-                        }
                         intermediate_model[model] = []
+                        
                         field_details['name'] = key
                         field_details['operation'] = 'MODIFY'
                         intermediate_model[model].push(field_details)
@@ -117,9 +124,6 @@ function createJSONMigrationFile(){
                     field_details['primaryKey'] = model_primaryKey
                     field_details['operation'] = 'ADD'
 
-                    migration_JSON['ALTER TABLE'] = {
-                        "tmp_model": []
-                    }
                     intermediate_model[model] = []
                     intermediate_model[model].push(field_details)
                     migration_JSON['ALTER TABLE'][model] = intermediate_model[model]
@@ -127,11 +131,9 @@ function createJSONMigrationFile(){
             }
         } else {
             intermediate_model[model] = []
+            
             for (var key in models_list[model]){
-                console.log("CREATE TABLE: " +model)
-                migration_JSON['CREATE TABLE'] = {
-                    "tmp_model": []
-                }
+                // console.log("CREATE TABLE: " +model)
 
                 model_dType = models_list[model][key]['type'].toString().toLowerCase()
                 model_allowNull = models_list[model][key]['allowNull']
@@ -142,12 +144,13 @@ function createJSONMigrationFile(){
                 field_details['dType'] = model_dType
                 field_details['primaryKey'] = model_primaryKey
 
-                migration_JSON['ALTER TABLE'] = {
-                    "tmp_model": []
-                }
+                // migration_JSON['ALTER TABLE'] = {
+                //     "tmp_model": []
+                // }
                 intermediate_model[model].push(field_details)
             }
             
+            // console.log(migration_JSON['CREATE TABLE'])
             migration_JSON['CREATE TABLE'][model] = intermediate_model[model]
 
         }
