@@ -155,7 +155,7 @@ function createJSONMigrationFile(){
 
     migration_JSON['DROP TABLE'] = dropped_tables_list
     migration_JSON = JSON.stringify(migration_JSON,  undefined, 4);
-    fs.writeFile("./migrations/migration-" + Date.now() + ".json", migration_JSON, function(err, result) {
+    fs.writeFile("./migrations/_current.json", migration_JSON, function(err, result) {
         if(err) console.log('error', err);
     });
 } 
