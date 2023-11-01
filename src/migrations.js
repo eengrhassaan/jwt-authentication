@@ -213,5 +213,5 @@ async function getTablesFromDB(){
         })
     })
 }
-      
+
 getTablesFromDB()

@@ -27,3 +27,4 @@ db.tokensblacklist = require("../models/tokensblacklist.model.js") (sequelize, S
 db.order = require("./order.model.js") (sequelize, Sequelize);
 
 module.exports = db;
+module.exports.sequelize = db.sequelize

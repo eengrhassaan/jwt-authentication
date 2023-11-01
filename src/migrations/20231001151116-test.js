@@ -1,0 +1,17 @@
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.sequelize.transaction(async (transaction) => {
+    await queryInterface.createTable('users', {"id":{"type":Sequelize.DataTypes.INTEGER({"length":11}),"allowNull":false,"primaryKey":true,"autoIncrement":true,"field":"id"},"password":{"type":Sequelize.DataTypes.STRING,"allowNull":false,"field":"password"},"first_name":{"type":Sequelize.DataTypes.STRING,"allowNull":false,"field":"first_name"},"last_name":{"type":Sequelize.DataTypes.STRING,"field":"last_name"},"email":{"type":Sequelize.DataTypes.STRING,"allowNull":false,"field":"email","unique":true},"phone":{"type":Sequelize.DataTypes.STRING,"field":"phone"},"createdAt":{"type":Sequelize.DataTypes.DATE,"allowNull":false,"field":"createdAt"},"updatedAt":{"type":Sequelize.DataTypes.DATE,"allowNull":false,"field":"updatedAt"}}, {transaction});await queryInterface.createTable('books', {"id":{"type":Sequelize.DataTypes.INTEGER,"allowNull":false,"primaryKey":true,"autoIncrement":true,"field":"id"},"author":{"type":Sequelize.DataTypes.STRING,"allowNull":false,"field":"author"},"content":{"type":Sequelize.DataTypes.STRING,"field":"content"},"title":{"type":Sequelize.DataTypes.STRING,"allowNull":false,"field":"title"},"createdAt":{"type":Sequelize.DataTypes.DATE,"allowNull":false,"field":"createdAt"},"updatedAt":{"type":Sequelize.DataTypes.DATE,"allowNull":false,"field":"updatedAt"}}, {transaction});await queryInterface.createTable('tokens_blacklist', {"id":{"type":Sequelize.DataTypes.INTEGER,"allowNull":false,"primaryKey":true,"autoIncrement":true,"field":"id"},"token":{"type":Sequelize.DataTypes.STRING,"allowNull":false,"field":"token"},"expiry":{"type":Sequelize.DataTypes.STRING,"allowNull":false,"field":"expiry"},"author":{"type":Sequelize.DataTypes.STRING,"allowNull":false,"field":"author"},"createdAt":{"type":Sequelize.DataTypes.DATE,"allowNull":false,"field":"createdAt"},"updatedAt":{"type":Sequelize.DataTypes.DATE,"allowNull":false,"field":"updatedAt"}}, {transaction});await queryInterface.createTable('orders', {"id":{"type":Sequelize.DataTypes.INTEGER,"primaryKey":true,"autoIncrement":true,"field":"id"},"customer_id":{"type":Sequelize.DataTypes.INTEGER,"field":"customer_id"},"product_id":{"type":Sequelize.DataTypes.INTEGER,"field":"product_id"},"quantity":{"type":Sequelize.DataTypes.INTEGER,"field":"quantity"},"createdAt":{"type":Sequelize.DataTypes.DATE,"allowNull":false,"field":"createdAt"},"updatedAt":{"type":Sequelize.DataTypes.DATE,"allowNull":false,"field":"updatedAt"}}, {transaction});
+    })
+    await queryInterface.sequelize.transaction(async (transaction) => {
+    await queryInterface.addConstraint('users', {"fields":["email"],"name":"users_email_unique","type":"unique"}, {transaction});
+    })
+  },down: async (queryInterface, Sequelize) => {
+    await queryInterface.sequelize.transaction(async (transaction) => {
+    await queryInterface.removeConstraint('users', 'users_email_unique', {transaction});
+    })
+    await queryInterface.sequelize.transaction(async (transaction) => {
+    await queryInterface.dropTable('users', {transaction});await queryInterface.dropTable('books', {transaction});await queryInterface.dropTable('tokens_blacklist', {transaction});await queryInterface.dropTable('orders', {transaction});
+    })
+  },
+};

@@ -33,7 +33,8 @@
     "redis": "^3.1.2",
     "sequelize": "^6.33.0",
     "sequelize-auto-migrations": "^1.0.3",
-    "sequelizr": "^3.0.75"
+    "sequelizr": "^3.0.75",
+    "umzug": "^3.3.1"
   },
   "devDependencies": {
     "sequelize-automatic-migrations": "^1.0.1",
